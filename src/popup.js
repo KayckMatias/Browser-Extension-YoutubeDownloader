@@ -2,111 +2,61 @@
 
 import './popup.css';
 
-(function() {
-  // We will make use of Storage API to get and store `count` value
-  // More information on Storage API can we found at
-  // https://developer.chrome.com/extensions/storage
+(function () {
 
-  // To get storage access, we have to mention it in `permissions` property of manifest.json file
-  // More information on Permissions can we found at
-  // https://developer.chrome.com/extensions/declare_permissions
-  const counterStorage = {
-    get: cb => {
-      chrome.storage.sync.get(['count'], result => {
-        cb(result.count);
-      });
-    },
-    set: (value, cb) => {
-      chrome.storage.sync.set(
-        {
-          count: value,
-        },
-        () => {
-          cb();
-        }
-      );
-    },
-  };
-
-  function setupCounter(initialValue = 0) {
-    document.getElementById('counter').innerHTML = initialValue;
-
-    document.getElementById('incrementBtn').addEventListener('click', () => {
-      updateCounter({
-        type: 'INCREMENT',
-      });
-    });
-
-    document.getElementById('decrementBtn').addEventListener('click', () => {
-      updateCounter({
-        type: 'DECREMENT',
-      });
-    });
-  }
-
-  function updateCounter({ type }) {
-    counterStorage.get(count => {
-      let newCount;
-
-      if (type === 'INCREMENT') {
-        newCount = count + 1;
-      } else if (type === 'DECREMENT') {
-        newCount = count - 1;
-      } else {
-        newCount = count;
-      }
-
-      counterStorage.set(newCount, () => {
-        document.getElementById('counter').innerHTML = newCount;
-
-        // Communicate with content script of
-        // active tab by sending a message
-        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-          const tab = tabs[0];
-
-          chrome.tabs.sendMessage(
-            tab.id,
-            {
-              type: 'COUNT',
-              payload: {
-                count: newCount,
-              },
-            },
-            response => {
-              console.log('Current count value passed to contentScript file');
-            }
-          );
-        });
-      });
-    });
-  }
-
-  function restoreCounter() {
-    // Restore count value
-    counterStorage.get(count => {
-      if (typeof count === 'undefined') {
-        // Set counter value as 0
-        counterStorage.set(0, () => {
-          setupCounter(0);
-        });
-      } else {
-        setupCounter(count);
-      }
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', restoreCounter);
-
-  // Communicate with background file by sending a message
-  chrome.runtime.sendMessage(
-    {
-      type: 'GREETINGS',
-      payload: {
-        message: 'Hello, my name is Pop. I am from Popup.',
+  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+    const tab = tabs[0];
+    let url = tabs[0].url;
+    var url_ = url.split("watch?v=")[1]
+    getYTData(url_)
+    /*
+    chrome.tabs.sendMessage(
+      tab.id,
+      {
+        type: 'ytUrl'
       },
-    },
-    response => {
-      console.log(response.message);
+      response => {
+        getYTData(response.url)
+      }
+    );*/
+  });
+
+  function getYTData(ytId) {
+    let baseURL = 'https://youtube-downloader-api-nodejs.herokuapp.com/' + ytId;
+    let getConfig = function () {
+      let url = "".concat(baseURL, ytId);
+      fetch(url)
+        .then((result) => {
+          return result.json();
+        })
+        .then((data) => {
+          Object.entries(data.formats.formats_info).forEach((entry) => {
+            const [key, value] = entry;
+            console.log(value.itag)
+            var urlFinal = value.url
+            document.getElementById('listDownload').innerHTML += '<a href="#!" class="downYT" linkYT=\'' + urlFinal + '\'>Baixar ' + value.quality + ' </a> <br>';
+          })
+
+          var ytTitle = data.name;
+          document.getElementById('ytTitle').innerHTML = ytTitle;
+
+          var buttonDown = document.getElementsByClassName('downYT');
+          for (let i = 0; i < buttonDown.length; i++) {
+            buttonDown[i].addEventListener("click", function () {
+              downloadVideo(this.getAttribute('linkYT'));
+            })
+          }
+        })
+
+        .catch(function (err) {
+          alert(err);
+        });
     }
-  );
+    getConfig();
+  }
+
+  function downloadVideo(url) {
+    var action_url = url;
+    chrome.tabs.create({ url: action_url });
+  }
 })();
