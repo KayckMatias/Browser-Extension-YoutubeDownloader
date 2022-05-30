@@ -11,13 +11,10 @@ YoutubeDownloader Extension
 
 ## Install
 
-[**Chrome** extension]() <!-- TODO: Add chrome extension link inside parenthesis -->
-
-## Contribution
-
-Suggestions and pull requests are welcomed!.
-
----
+Install the api to work together with the extension [Use Youtube Api](https://github.com/LordzSpectron/Youtube-Api-Downloader)
+Change baseURL in popup.js line 19 for your API 
+Edit the extension as you like or leave it as is 
+Compile using [Chrome Extension CLI](https://github.com/dutiyesh/chrome-extension-cli)
 
 This project was bootstrapped with [Chrome Extension CLI](https://github.com/dutiyesh/chrome-extension-cli)
 
