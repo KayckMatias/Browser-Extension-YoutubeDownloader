@@ -19,5 +19,6 @@ YoutubeDownloader Extension
  
 > Compile using [Chrome Extension CLI](https://github.com/dutiyesh/chrome-extension-cli)
 
-This project was bootstrapped with [Chrome Extension CLI](https://github.com/dutiyesh/chrome-extension-cli)
+------------------
+This project was created with ♥ and bootstrapped with [Chrome Extension CLI](https://github.com/dutiyesh/chrome-extension-cli)
 
