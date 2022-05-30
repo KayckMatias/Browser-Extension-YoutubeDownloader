@@ -8,16 +8,28 @@
 </head>
 
 <body>
-  <div class="app">
-    <p class="counter-label" id="ytTitle">Carregando dados...</p>
-    <div id="listDownload" style="overflow:auto;">
-
-    </div>
-
-    <hr class="divider" />
-
-    <p class="subtitle">Created by lordz &hearts;</p>
+  <center>
+    <h3 id="ytTitle" style="margin: 10px">Carregando dados...</h3>
+  </center>
+  <div id="tableDownload">
+    <table>
+      <tr>
+        <th>Tipo</th>
+        <th>Qualidade</th>
+        <th>Extensão</th>
+        <th>Tem vídeo</th>
+        <th>Tem áudio</th>
+        <th>Tamanho</th>
+        <th>Baixar</th>
+      </tr>
+      <tbody id="listDownload" style="overflow:auto;">
+      </tbody>
+    </table>
   </div>
+
+  <center>
+    <p style="padding: 10px">Created by lordz &hearts;</p>
+  </center>
 
   <script src="popup.js"></script>
 
