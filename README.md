@@ -1,11 +1,13 @@
 # <img src="public/icons/icon_48.png" width="45" align="left"> Youtubedownloader
 
-My Chrome Extension
+YoutubeDownloader Extension
 
 ## Features
 
-- Feature 1
-- Feature 2
+- Download anything video
+- Literally all qualities available
+- Download audio only, video only, whatever you want!
+- Works with its own api
 
 ## Install
 
